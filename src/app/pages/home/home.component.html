@@ -1,9 +1,33 @@
-<h1 class="app-home__title">Home</h1>
+
+
+<toolbar></toolbar>
+
+<sidenav></sidenav>
+<!-- APP BANNER -->
+
+
+<!-- APP BODY -->
+<div class="d-flex justify-content-end banner-wrapper">
+	<img src="assets/images/casino.png" alt="CASINO RiverTech Banner" class="img-fluid" id="banner-img">
+</div>
+
+
+<!-- <router-outlet></router-outlet> -->
+
+
 
 <div class="app-home__content">
-	<div class="app-home__json-data-container">
-		<code class="app-home__json-data">
-			{{gamesData$ | async | json}}
-		</code>
-	</div>
+	<h1>LET's START</h1>
+
+		<!-- <div class="d-flex flex-column" *ngFor="let game of games">
+			<img [src]="game.thumb.url" alt="">
+		</div> -->
+
+		<div class="d-flex flex-column">
+			<img [src]="firstGame!.thumb.url" 
+			[alt]="firstGame!.thumb.title" 
+			[title]="firstGame!.thumb.title"
+			class="img-fluid game-img">
+		</div> 
+
 </div>
