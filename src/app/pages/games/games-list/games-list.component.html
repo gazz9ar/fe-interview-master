@@ -1,0 +1,24 @@
+
+<div class="row">
+    <ng-container *ngFor="let game of games">
+        <div class="col-12 col-md-6 col-xl-4 col-xxl-3 d-flex justify-content-center game-col" *ngIf="game.thumb" >
+            <div class="d-flex flex-column w-100 ps-3" >        
+               <div class="position-relative game-wrapper" >
+                    <div class="hover-bg"></div>
+                    <img class="img-fluid game-img"             
+                    [src]="game.thumb.url ? game.thumb.url : 'assets/images/casino.png'" 
+                    [alt]="game.thumb.title ?? game.title" 
+                    [title]="game.thumb.title ?? game.title">  
+               </div>       
+            </div> 
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="tag === 'trending'">
+        <div class="w-100 d-flex justify-content-center mb-5 pb-3 browse-games-wrapper">
+            <span class="casino-text">Browse all games</span>
+            <mat-icon class="position-relative casino-text" id="browse-games">keyboard_double_arrow_right</mat-icon>
+        </div>
+    </ng-container>
+   
+</div>

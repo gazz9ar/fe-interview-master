@@ -3,31 +3,19 @@
 <toolbar></toolbar>
 
 <sidenav></sidenav>
+
 <!-- APP BANNER -->
+<banner></banner>
 
-
-<!-- APP BODY -->
-<div class="d-flex justify-content-end banner-wrapper">
-	<img src="assets/images/casino.png" alt="CASINO RiverTech Banner" class="img-fluid" id="banner-img">
+<!-- LIST OF GAMES -->
+<div class="app-home__content">
+	<h2 class="casino-text games-list" >Trending Games</h2>
+	<games-list searchBy="trending"></games-list>
 </div>
 
 
-<!-- <router-outlet></router-outlet> -->
 
-
-
-<div class="app-home__content">
-	<h1>LET's START</h1>
-
-		<!-- <div class="d-flex flex-column" *ngFor="let game of games">
-			<img [src]="game.thumb.url" alt="">
-		</div> -->
-
-		<div class="d-flex flex-column">
-			<img [src]="firstGame!.thumb.url" 
-			[alt]="firstGame!.thumb.title" 
-			[title]="firstGame!.thumb.title"
-			class="img-fluid game-img">
-		</div> 
-
+<!-- BACKGROUND IMAGE 1 -->
+<div class="d-flex justify-content-end roulette-wrapper">
+	<img src="assets/images/casino.png" alt="CASINO RiverTech Banner" class="img-fluid" id="banner-img">
 </div>

@@ -1,7 +1,7 @@
 #toolbar {
     background: none;
-    z-index: 100;
-    span {
-        color: #86372D;
-    }
+    z-index: 100;  
+    position: fixed;
+    height: 34px;
+    background: #050e1c;
 }

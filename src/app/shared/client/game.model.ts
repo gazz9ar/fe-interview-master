@@ -1,6 +1,6 @@
 interface Thumb {
-	url:string;
-	title:string;
+	url:string | null;
+	title:string | null;
 }
 
 export interface Game {

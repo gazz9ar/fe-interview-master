@@ -6,6 +6,12 @@
 		text-align: center;
 	}
 
+	&__content {
+		margin-left: 150px;
+		padding-top: 60px;
+		overflow: hidden;
+	}
+
 	&__json-data-container {
 		background-color: $black;
 		color: $white;
@@ -15,16 +21,18 @@
 		}
 	}
 }
-.banner-wrapper {
+
+
+.roulette-wrapper {
 	bottom: 0;
     right: 0;
     position: fixed;
+	z-index: -1;	
+	display: none !important;
 	#banner-img {
 		opacity: 0.7;
 	}
 }
-.game-img {
-	width: 200px;	
+.games-list {
+	margin-top: 66vh;
 }
-
-

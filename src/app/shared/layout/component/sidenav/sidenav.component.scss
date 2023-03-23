@@ -1,6 +1,12 @@
 #sidenav {
     height: 100vh;
     position: fixed;
-    z-index: 50;
-    width: 200px;
+    z-index: 50;   
+    width: 74px;
+    background: #050e1c;
+    border-bottom-right-radius: 5px;
+    margin-top: 34px;
+}
+.modules-menu {    
+    padding-left: 34%;
 }

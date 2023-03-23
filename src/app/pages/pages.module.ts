@@ -5,6 +5,8 @@ import { HomeComponent } from "./home/home.component";
 import { AppPagesRoutingModule } from "./pages-routing.module";
 import { MaterialModule } from "../material/material.module";
 import { LayoutModule } from "../shared/layout/layout.module";
+import { GamesListComponent } from './games/games-list/games-list.component';
+import { BannerComponent } from './home/banner/banner.component';
 
 const COMPONENTS = [
 	HomeComponent,
@@ -18,7 +20,9 @@ const COMPONENTS = [
 		LayoutModule
 	],
 	declarations: [
-		...COMPONENTS
+		...COMPONENTS,
+  GamesListComponent,
+  BannerComponent
 	],
 	exports: [
 		...COMPONENTS

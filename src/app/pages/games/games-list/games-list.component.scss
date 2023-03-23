@@ -1,0 +1,52 @@
+@import "@app/mixins";
+
+.game-wrapper {
+    width: 280px;
+
+    .game-img {
+        width: 100%;	
+        border-radius: 8px;
+        cursor: pointer;
+        position: relative;   
+    }  
+    
+    .hover-bg {   
+        position: absolute;
+        display: none;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 280px;
+        height: 280px;
+        border-radius: 8px;
+        background: #f9d62b14;
+        z-index: 2;
+        cursor: pointer;
+    }
+
+    &:hover .hover-bg{        
+        display: block !important;        
+    }
+}
+.game-col {
+    margin-bottom: 75px;
+    @include breakpoint("xlarge") {
+        margin-bottom: 55px;
+    }
+    @include breakpoint("xsmall") {
+       margin-bottom: 25px;
+    }
+   
+}
+
+.browse-games-wrapper {
+    span {
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }      
+    }
+    #browse-games {
+        bottom: 2px;
+    }
+}
