@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { delay, finalize, map } from 'rxjs/operators';
 import { Game, GameMockClient } from 'src/app/shared';
 
 @Component({
@@ -23,8 +23,7 @@ export class GamesListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkIfTagExists();
-    
+    this.checkIfTagExists();    
   }
 
   private checkIfTagExists(): void {
@@ -46,16 +45,15 @@ export class GamesListComponent implements OnInit {
 
   loadGamesByTag(): void {
     this.gamesData$!
-    .pipe(
-      finalize(() => (this.cdRef.markForCheck())),
+    .pipe(   
       map((games:Game[])=> {
         return games.filter((game:Game) => (game.tag === 'trending'))
       })
     )
     .subscribe(
 			games => {
-				this.games = games;		
-        console.log(this.games);        
+        this.cdRef.markForCheck();
+				this.games = games;            
 			}
 		)
   }

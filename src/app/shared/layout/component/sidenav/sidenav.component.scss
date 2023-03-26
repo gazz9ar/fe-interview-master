@@ -1,3 +1,5 @@
+@import "@app/mixins";
+
 #sidenav {
     height: 100vh;
     position: fixed;
@@ -6,7 +8,20 @@
     background: #050e1c;
     border-bottom-right-radius: 5px;
     margin-top: 34px;
+    background: rgba( 227, 217, 181, 0.2 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 11.5px );
+    -webkit-backdrop-filter: blur( 11.5px );   
+
+    @include breakpoint("xsmall") {
+        width: 50px;
+    }	
+
+    .modules-menu {    
+        padding-left: 34%;
+        @include breakpoint("xsmall") {
+            padding-left: 25%;
+        }	
+    }
 }
-.modules-menu {    
-    padding-left: 34%;
-}
+

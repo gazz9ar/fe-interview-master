@@ -10,16 +10,22 @@
 		margin-left: 150px;
 		padding-top: 60px;
 		overflow: hidden;
-	}
+		@include breakpoint("small") {
+			margin-left: 90px;
+		}	
 
-	&__json-data-container {
-		background-color: $black;
-		color: $white;
-
-		@include breakpoint("xsmall") {
-			color: $neon-green;
+		#trending-games-header {
+			margin-top: 45%;		
+			@include breakpoint("large") {
+				margin-top: 47%;
+			}
+		
+			@include breakpoint("medium") {
+				margin-top: 53%;
+			}
+			
 		}
-	}
+	}	
 }
 
 
@@ -32,7 +38,4 @@
 	#banner-img {
 		opacity: 0.7;
 	}
-}
-.games-list {
-	margin-top: 66vh;
 }
