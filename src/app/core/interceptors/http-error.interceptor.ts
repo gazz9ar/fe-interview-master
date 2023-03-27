@@ -7,7 +7,7 @@ import {
 
 import { catchError, delay, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { LoadingService } from 'src/app/shared/services/loading.service';
+import { LoadingService } from 'src/app/shared/layout/services/loading.service';
 import { Observable, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -24,10 +24,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     this.loadingService.startLoading();
     return next.handle(req)
     .pipe(
-      finalize(() => {
-        setTimeout(() => {
-          this.loadingService.finishLoading();
-        }, 500);       
+      finalize(() => {    
+        this.loadingService.finishLoading();     
       }),
       catchError(error => {
         //console.error("Request error:", error.status);

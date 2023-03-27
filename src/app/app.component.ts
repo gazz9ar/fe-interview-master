@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
-import { LoadingService } from "./shared/services/loading.service";
+import { LoadingService } from "./shared/layout/services/loading.service";
 
 @Component({
 	selector: "app-root",
@@ -8,7 +8,7 @@ import { LoadingService } from "./shared/services/loading.service";
 	styles: [`
 		#progress-bar {
 			z-index:999;
-			position:absolute;
+			position:fixed;
 			top: 33px;
 		}
 	`]
@@ -21,12 +21,9 @@ export class AppComponent {
 		) {
 		loadingService.loading$		
 		.subscribe(
-			loading => {		
-				console.log(new Date().getTime());
-				
-				this._cdRef.markForCheck();		
+			loading => {							
 				this.isLoading = loading;		
-				this._cdRef.markForCheck();		
+				this._cdRef.markForCheck();	
 			}
 		)
 	}

@@ -1,0 +1,17 @@
+
+
+<toolbar></toolbar>
+
+<sidenav></sidenav>
+
+<!-- APP BANNER -->
+<banner></banner>
+
+<!-- LIST OF GAMES -->
+<div class="app-home__content">
+	<h3 class="casino-text casino-font text-uppercase fs-5" id="trending-games-header">Trending Games</h3>
+	<games-list searchByTag="trending"></games-list>
+
+	<h3 class="casino-text casino-font text-uppercase mt-4 fs-5" >Last Played Games</h3>
+	<games-list [lastPlayed]="true"></games-list>
+</div>

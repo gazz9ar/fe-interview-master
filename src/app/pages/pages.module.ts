@@ -1,15 +1,19 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { HomeComponent } from "./home/home.component";
 
 import { AppPagesRoutingModule } from "./pages-routing.module";
 import { MaterialModule } from "../material/material.module";
 import { LayoutModule } from "../shared/layout/layout.module";
-import { GamesListComponent } from './games/games-list/games-list.component';
-import { BannerComponent } from './home/banner/banner.component';
+import { HomeComponent } from "./components/home/home.component";
+import { GamesListComponent } from "./components/games/components/games-list/games-list.component";
+import { BannerComponent } from "./components/home/components/banner/banner.component";
+
+
 
 const COMPONENTS = [
 	HomeComponent,
+	GamesListComponent,
+	BannerComponent
 ];
 
 @NgModule({
@@ -20,9 +24,7 @@ const COMPONENTS = [
 		LayoutModule
 	],
 	declarations: [
-		...COMPONENTS,
-  GamesListComponent,
-  BannerComponent
+		...COMPONENTS	
 	],
 	exports: [
 		...COMPONENTS

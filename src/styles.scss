@@ -1,7 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: 'arialBlack';
+    src: url('./assets/fonts/arial.ttf');
+  }
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { 
+    margin: 0; 
+    font-family: 'arialBlack', Roboto, "Helvetica Neue", sans-serif !important; 
+}
 
 ul {
     list-style: none;
@@ -13,13 +20,20 @@ a {
 }
 
 body {
-    background: #02070F;
-    color: #fff;
+    background: rgb(27,3,60);
+    background: radial-gradient(circle, rgba(27,3,60,1) 54%, rgba(52,21,93,1) 87%);
+    color: #fff;   
 }
 
 .casino-text {
-    color: #c9be43;
+    color: #FFF800 !important; 
 }
+
+.casino-font {      
+    font-family: 'arialBlack' !important;
+    letter-spacing: 0.7px;
+}
+
 .font-tooltip {
     font-size: 0.8rem;   
 }

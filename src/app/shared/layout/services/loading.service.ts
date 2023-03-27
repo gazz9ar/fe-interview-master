@@ -15,7 +15,10 @@ export class LoadingService {
     this.loadingSubject.next(true);
   }
 
+  // just to mimic real http req
   finishLoading(): void {
-    this.loadingSubject.next(false);
+    setTimeout(() => {
+      this.loadingSubject.next(false);
+    }, 500);    
   }
 }
