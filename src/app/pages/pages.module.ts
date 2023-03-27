@@ -7,6 +7,8 @@ import { LayoutModule } from "../shared/layout/layout.module";
 import { HomeComponent } from "./components/home/home.component";
 import { GamesListComponent } from "./components/games/components/games-list/games-list.component";
 import { BannerComponent } from "./components/home/components/banner/banner.component";
+import { GamesComponent } from './components/games/games.component';
+import { GameDescriptionComponent } from './components/games/components/game-description/game-description.component';
 
 
 
@@ -24,7 +26,9 @@ const COMPONENTS = [
 		LayoutModule
 	],
 	declarations: [
-		...COMPONENTS	
+		...COMPONENTS,
+  GamesComponent,
+  GameDescriptionComponent	
 	],
 	exports: [
 		...COMPONENTS

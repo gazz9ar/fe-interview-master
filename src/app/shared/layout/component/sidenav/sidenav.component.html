@@ -2,11 +2,11 @@
     <ul class="modules-menu">
         
         <li class="mb-4 mt-4" matTooltip="Home" matTooltipPosition="right"  matTooltipClass="font-tooltip">
-            <a href="/"><mat-icon>home</mat-icon></a>
+            <a [routerLink]="['/home']" routerLinkActive="router-link-active" ><mat-icon>home</mat-icon></a>
         </li>
 
         <li matTooltip="Games" matTooltipPosition="right" matTooltipClass="font-tooltip">
-            <a href="/"><mat-icon>casino</mat-icon></a>
+            <a [routerLink]="['/games']" ><mat-icon>casino</mat-icon></a>
         </li>
 
     </ul>

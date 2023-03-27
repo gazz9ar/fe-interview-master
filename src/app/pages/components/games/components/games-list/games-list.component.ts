@@ -90,8 +90,11 @@ export class GamesListComponent extends Unsub implements OnInit  {
   }
 
   navigateToGamePage(game:Game): void {
+    console.log('asd');
+    
     this.lastGamesPlayedService.addLastPlayedGame(game);
     this.router.navigate([`games/${game.id}`]);
+    console.log('asd22222');
   }
 
   subscribeToLoading(): void {

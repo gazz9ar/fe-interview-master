@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { SidenavComponent } from './component/sidenav/sidenav.component';
 import { MaterialModule } from 'src/app/material/material.module';
+import { RouterModule } from '@angular/router';
 
 let COMPONENTS:any[] = [
   ToolbarComponent,
@@ -15,7 +16,8 @@ let COMPONENTS:any[] = [
   ],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    RouterModule
   ],
   exports: [
     ...COMPONENTS
