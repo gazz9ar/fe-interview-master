@@ -1,10 +1,11 @@
 import { Router } from '@angular/router';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { delay, filter, finalize, map } from 'rxjs/operators';
+import { delay, filter, finalize, map, takeUntil } from 'rxjs/operators';
 import { Game, GameMockClient } from 'src/app/shared';
 import { LastPlayedService } from '../../services/last-played.service';
 import { LoadingService } from 'src/app/shared/layout/services/loading.service';
+import { Unsub } from 'src/app/core/Unsubscription/Unsub';
 
 @Component({
   selector: 'games-list',
@@ -12,7 +13,7 @@ import { LoadingService } from 'src/app/shared/layout/services/loading.service';
   styleUrls: ['./games-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GamesListComponent implements OnInit {
+export class GamesListComponent extends Unsub implements OnInit  {
 
   @Input('searchByTag') tag:string = '';
   @Input('lastPlayed') lastPlayed:boolean = false;
@@ -28,7 +29,8 @@ export class GamesListComponent implements OnInit {
     private _cdRef: ChangeDetectorRef,
     private loadingService:LoadingService
   ) { 
-    this.gamesData$ = gameMockClient.getAll$();
+    super();
+    this.gamesData$ = gameMockClient.getAll$();    
   }
 
   ngOnInit(): void {   
@@ -75,6 +77,7 @@ export class GamesListComponent implements OnInit {
   loadGamesByLastPlayed(): void {
     this.loadingService.startLoading();
     this.lastGamesPlayedService.lastPlayedGames$
+    .pipe(takeUntil(this.unsubscribe$))
     .subscribe( games => {
       this.setGamesAndRunChangeDetection(games);   
     })
@@ -92,12 +95,9 @@ export class GamesListComponent implements OnInit {
   }
 
   subscribeToLoading(): void {
-    console.log(' va a ser 2'); 
     this.loadingService.loading$
-    .subscribe( (loading:boolean) => {
-      if(loading){
-        console.log('SHOW SPINNER'); 
-      }           
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe( (loading:boolean) => {             
       this.isLoading = loading;
       this.cdRef.markForCheck();
     })

@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
+import { Unsub } from 'src/app/core/Unsubscription/Unsub';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { LoadingService } from "./shared/layout/services/loading.service";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
 	selector: "app-root",
@@ -13,18 +15,28 @@ import { LoadingService } from "./shared/layout/services/loading.service";
 		}
 	`]
 })
-export class AppComponent {
+export class AppComponent extends Unsub implements OnInit{
 	isLoading:boolean = false;
 	constructor(
 		private loadingService:LoadingService,
 		private _cdRef: ChangeDetectorRef
-		) {
-		loadingService.loading$		
+		) {			
+		super();
+		
+	}
+
+	ngOnInit(): void {
+		this.subscribeToLoadingService();
+	}
+
+	subscribeToLoadingService(): void {	
+		this.loadingService.loading$		
+		.pipe(takeUntil(this.unsubscribe$)) 
 		.subscribe(
-			loading => {							
+			(loading:boolean) => {										
 				this.isLoading = loading;		
 				this._cdRef.markForCheck();	
 			}
-		)
+		);
 	}
 }
