@@ -3,26 +3,29 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { HomeComponent } from "./components/home/home.component";
 import { GamesComponent } from "./components/games/games.component";
+import { GeneralLayoutComponent } from '../shared/layout/component/general/general.component';
 
 
 
 const ROUTES: Routes = [
-	{ 
-		path: "home", 
-		component: HomeComponent		
-	},
-	{ 
-		path: "games", 
-		component: GamesComponent		
-	},
-	{ 
-		path: "games/:id", 
-		component: GameDescriptionComponent		
+	{
+		path: '',
+		component:GeneralLayoutComponent,
+		children: [
+			{
+				path: 'home',
+				component: HomeComponent
+			},
+			{
+				path: 'games',
+				component: GamesComponent
+			}
+		]
 	},
 	{ 
 		path: "**", 
 		redirectTo: 'home'		
-	},
+	}
 ];
 
 @NgModule({

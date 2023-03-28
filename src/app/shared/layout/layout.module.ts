@@ -4,15 +4,17 @@ import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { SidenavComponent } from './component/sidenav/sidenav.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { RouterModule } from '@angular/router';
+import { GeneralLayoutComponent } from './component/general/general.component';
 
 let COMPONENTS:any[] = [
   ToolbarComponent,
-  SidenavComponent
+  SidenavComponent,
+  GeneralLayoutComponent
 ];
 
 @NgModule({
   declarations: [
-    ...COMPONENTS,    
+    ...COMPONENTS,  
   ],
   imports: [
     CommonModule,
