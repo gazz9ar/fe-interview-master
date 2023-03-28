@@ -1,5 +1,15 @@
 @import "@app/mixins";
 
+.spinner-wrapper {
+    height: 200px;
+
+    #games-spinner {
+        position: absolute;
+        left: 42%;
+    }
+}
+
+
 .game-col {
     margin-bottom: 75px;
     margin-top: 30px;
@@ -9,14 +19,22 @@
     @include breakpoint("xsmall") {
        margin-bottom: 25px;
     }
-
+    .div-game-wrapper {
+        
+        @include breakpoint("medium") {
+            display: flex;
+            justify-content: center;   
+            align-items: center;
+        }
+    }
     .game-wrapper {
         width: 280px;
         box-shadow: 0px 1px 19px 3px rgba(0,0,0,0.75);
-        border-radius: 8px;      
+        border-radius: 15px;    
         @include breakpoint("xsmall") {
-            width: 180px;   
+            width: 240px;   
         }
+
     
         .game-img {
             width: 100%;	

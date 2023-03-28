@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { delay, filter, finalize, map, takeUntil } from 'rxjs/operators';
 import { Game, GameMockClient } from 'src/app/shared';
@@ -17,6 +17,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
 
   @Input('searchByTag') tag:string = '';
   @Input('lastPlayed') lastPlayed:boolean = false;
+  @Input('gamesQuantity') gamesQuantity:number = 8;
   gamesData$?: Observable<Game[]>;
 	games:Game[] = [];
   isLoading: boolean = false;
@@ -25,32 +26,49 @@ export class GamesListComponent extends Unsub implements OnInit  {
     gameMockClient: GameMockClient,
 		public cdRef:ChangeDetectorRef,
     private router:Router,
-    private lastGamesPlayedService:LastPlayedService,
-    private _cdRef: ChangeDetectorRef,
-    private loadingService:LoadingService
+    private lastGamesPlayedService:LastPlayedService, 
+    private loadingService:LoadingService,
   ) { 
     super();
     this.gamesData$ = gameMockClient.getAll$();    
   }
 
-  ngOnInit(): void {   
-    this.checkIfTagExists();    
-    this.checkIfLastPlayedGames();
+  ngOnChanges(changes:SimpleChanges): void {
+    if(changes['gamesQuantity']){
+      this.loadAllGames(changes['gamesQuantity'].currentValue);
+    }      
+  }
+
+  ngOnInit(): void {      
+    if(!this.checkIfLastPlayedGames() && !this.checkIfTagExists()){
+      this.loadAllGames(8);
+    }
     this.subscribeToLoading();
   }
 
-  private checkIfTagExists(): void {    
-    this.tag === '' ? '' :  this.loadGamesByTag();   
+  private checkIfTagExists(): boolean {   
+    if(this.tag !== '' ){
+      this.loadGamesByTag();
+      return true;
+    }       
+    return false;
   }
 
-  private checkIfLastPlayedGames():void {
-    !this.lastPlayed ? '' :  this.loadGamesByLastPlayed();  
+  private checkIfLastPlayedGames(): boolean {
+    if(this.lastPlayed){
+      this.loadGamesByLastPlayed();
+      return true;
+    }  
+    return false;
   }
 
-  loadAllGames(): void {
+  loadAllGames(gamesQuantity:number): void {
     this.gamesData$!
     .pipe(
-      finalize(() => (this.cdRef.markForCheck()))
+      takeUntil(this.unsubscribe$),
+      map((games:Game[]) => {
+        return games.slice(0,gamesQuantity)
+      })
     )
     .subscribe(
 			games => {
@@ -63,6 +81,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
     this.loadingService.startLoading();
     this.gamesData$!
     .pipe(   
+      takeUntil(this.unsubscribe$),
       map((games:Game[])=> {
         return games.filter((game:Game) => (game.tag === 'trending'))
       })
@@ -85,16 +104,17 @@ export class GamesListComponent extends Unsub implements OnInit  {
 
   setGamesAndRunChangeDetection(games:Game[]): void {
     this.loadingService.finishLoading();       
-    this.games = games;
+    this.games.push(...games);
     this.cdRef.markForCheck();   
   }
 
-  navigateToGamePage(game:Game): void {
-    console.log('asd');
-    
+  navigateToGamePage(game:Game): void {   
     this.lastGamesPlayedService.addLastPlayedGame(game);
     this.router.navigate([`games/${game.id}`]);
-    console.log('asd22222');
+  }
+
+  navigateToGamesPage(): void {  
+    this.router.navigate([`games`]);
   }
 
   subscribeToLoading(): void {

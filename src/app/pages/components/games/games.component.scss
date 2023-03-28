@@ -1,0 +1,24 @@
+@import "@app/mixins";
+
+.banner-img-wrapper{
+    img {
+        @include breakpoint("medium") {
+            width: 350px;
+            margin-left: 60px;
+        }   
+        @include breakpoint("xsmall") {
+            width: 280px;
+            margin-left: 60px;
+        }   
+    }   
+}
+  
+.games-wrapper {
+    margin-left: 110px;  
+    @include breakpoint("small") {
+        margin-left: 90px;
+    }      
+    @include breakpoint("xsmall") {
+        margin-left: 50px;
+    }    
+}

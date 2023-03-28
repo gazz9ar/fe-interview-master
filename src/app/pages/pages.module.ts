@@ -9,6 +9,7 @@ import { GamesListComponent } from "./components/games/components/games-list/gam
 import { BannerComponent } from "./components/home/components/banner/banner.component";
 import { GamesComponent } from './components/games/games.component';
 import { GameDescriptionComponent } from './components/games/components/game-description/game-description.component';
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 
 
@@ -23,12 +24,13 @@ const COMPONENTS = [
 		CommonModule,
 		AppPagesRoutingModule,
 		MaterialModule,
-		LayoutModule
+		LayoutModule,
+		InfiniteScrollModule
 	],
 	declarations: [
 		...COMPONENTS,
-  GamesComponent,
-  GameDescriptionComponent	
+		GamesComponent,
+		GameDescriptionComponent	
 	],
 	exports: [
 		...COMPONENTS

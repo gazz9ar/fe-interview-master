@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GamesComponent implements OnInit {
 
+  gamesToLoad:number = 0;
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onScroll() {
+    this.gamesToLoad += 8;
   }
 
 }

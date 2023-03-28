@@ -2,8 +2,16 @@
 
 <sidenav></sidenav>
 
-<div class="w-100 mt-4 d-flex justify-content-center">
-    <img src="assets/images/Games.png" alt="GAMES">
+<div class="w-100 mt-4 d-flex justify-content-center banner-img-wrapper">
+    <img src="assets/images/Games2.png" alt="GAMES" title="Play our games!" id="games-banner-img">
 </div>
 
-<games-list [searchByTag]="'trending'"></games-list>
+<div 
+infiniteScroll
+class="games-wrapper"
+[infiniteScrollDistance]="2"
+[infiniteScrollThrottle]="50"
+(scrolled)="onScroll()">
+    <games-list [gamesQuantity]="gamesToLoad"></games-list>
+</div>
+
