@@ -20,13 +20,24 @@ a {
 }
 
 body {
-    background: rgb(27,3,60);
-    background: radial-gradient(circle, rgba(27,3,60,1) 54%, rgba(52,21,93,1) 87%);
+    background: rgb(13,1,29);
+    background: linear-gradient(0deg, rgba(13,1,29,1) 0%, rgba(27,3,60,1) 50%, rgba(13,1,29,1) 100%);
     color: #fff;   
 }
 
-.casino-text {
-    color: #FFF800 !important; 
+.casino-text {  
+    color: rgba(255,248,0,1) !important;
+}
+
+.casino-text-bg {  
+    background-color: rgba(255,248,0,1);
+    background-image: linear-gradient(90deg, rgba(89,0,211,1) 20%, rgba(255,248,0,1) 80%) !important;
+    background-size: 19% !important; 
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
 }
 
 .casino-font {      

@@ -6,8 +6,8 @@
 <div 
 infiniteScroll
 class="games-wrapper"
-[infiniteScrollDistance]="2"
-[infiniteScrollThrottle]="50"
+[infiniteScrollDistance]="1"
+[infiniteScrollThrottle]="350"
 (scrolled)="onScroll()">
     <games-list [gamesQuantity]="gamesToLoad"></games-list>
 </div>

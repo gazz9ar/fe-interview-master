@@ -1,11 +1,13 @@
 import { Router } from '@angular/router';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { delay, filter, finalize, map, takeUntil } from 'rxjs/operators';
+import { delay, map, takeUntil } from 'rxjs/operators';
 import { Game, GameMockClient } from 'src/app/shared';
 import { LastPlayedService } from '../../services/last-played.service';
 import { LoadingService } from 'src/app/shared/layout/services/loading.service';
 import { Unsub } from 'src/app/core/Unsubscription/Unsub';
+import { Store } from '@ngrx/store';
+import { LoadGames, LoadedAllGamesSuccessfully, LoadedPartialGamesSuccessfully } from 'src/app/state/actions/Games.actions';
 
 @Component({
   selector: 'games-list',
@@ -17,10 +19,12 @@ export class GamesListComponent extends Unsub implements OnInit  {
 
   @Input('searchByTag') tag:string = '';
   @Input('lastPlayed') lastPlayed:boolean = false;
-  @Input('gamesQuantity') gamesQuantity:number = 8;
+  @Input('gamesQuantity') gamesQuantity:number = 0;
   gamesData$?: Observable<Game[]>;
 	games:Game[] = [];
   isLoading: boolean = false;
+  firstTimeLoading: boolean = true;
+  finishedLoadingAllGames:boolean = false;
   
   constructor(
     gameMockClient: GameMockClient,
@@ -28,20 +32,23 @@ export class GamesListComponent extends Unsub implements OnInit  {
     private router:Router,
     private lastGamesPlayedService:LastPlayedService, 
     private loadingService:LoadingService,
+    private store:Store
   ) { 
     super();
     this.gamesData$ = gameMockClient.getAll$();    
   }
 
   ngOnChanges(changes:SimpleChanges): void {
-    if(changes['gamesQuantity']){
-      this.loadAllGames(changes['gamesQuantity'].currentValue);
+    if(changes['gamesQuantity']){      
+      if(!changes['gamesQuantity'].isFirstChange()){
+        this.loadPartialGamesData(changes['gamesQuantity'].currentValue);
+      }      
     }      
   }
 
   ngOnInit(): void {      
     if(!this.checkIfLastPlayedGames() && !this.checkIfTagExists()){
-      this.loadAllGames(8);
+      this.loadPartialGamesData(this.gamesQuantity);
     }
     this.subscribeToLoading();
   }
@@ -62,19 +69,41 @@ export class GamesListComponent extends Unsub implements OnInit  {
     return false;
   }
 
-  loadAllGames(gamesQuantity:number): void {
+  loadPartialGamesData(gamesQuantity:number): void {    
+    this.store.dispatch(LoadGames());
+    this.setFirstTimeLoading(gamesQuantity);
     this.gamesData$!
     .pipe(
       takeUntil(this.unsubscribe$),
       map((games:Game[]) => {
-        return games.slice(0,gamesQuantity)
-      })
+        return games.slice(gamesQuantity,gamesQuantity+8)
+      }),
+      delay(200)
     )
     .subscribe(
-			games => {
-        this.setGamesAndRunChangeDetection(games);              
+			(games: Game[]) => {  
+        this.setNewGamesState(games);                    
 			}
 		)
+  }
+
+  setNewGamesState(games:Game[]): void {
+    if(games.length > 0){          
+      this.games.push(...games);
+      const newArray = Object.assign([], this.games);      
+      this.store.dispatch(LoadedPartialGamesSuccessfully({loadedGames:newArray}));
+    } else {
+      if(!this.finishedLoadingAllGames){
+        this.store.dispatch(LoadedAllGamesSuccessfully({loadedGames:this.games}));
+      }
+      this.finishedLoadingAllGames = true;     
+    }           
+    this.setLoadingAndRunChangeDetection(); 
+  }
+
+  setLoadingAndRunChangeDetection(): void {
+    this.loadingService.finishLoading();          
+    this.cdRef.markForCheck();   
   }
 
   loadGamesByTag(): void {    
@@ -88,7 +117,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
     )
     .subscribe(
 			games => {
-        this.setGamesAndRunChangeDetection(games);       
+        this.setLoadingAndRunChangeDetection();       
 			}
 		)
   }
@@ -98,15 +127,9 @@ export class GamesListComponent extends Unsub implements OnInit  {
     this.lastGamesPlayedService.lastPlayedGames$
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe( games => {
-      this.setGamesAndRunChangeDetection(games);   
+      this.setLoadingAndRunChangeDetection();   
     })
-  }
-
-  setGamesAndRunChangeDetection(games:Game[]): void {
-    this.loadingService.finishLoading();       
-    this.games.push(...games);
-    this.cdRef.markForCheck();   
-  }
+  } 
 
   navigateToGamePage(game:Game): void {   
     this.lastGamesPlayedService.addLastPlayedGame(game);
@@ -124,5 +147,11 @@ export class GamesListComponent extends Unsub implements OnInit  {
       this.isLoading = loading;
       this.cdRef.markForCheck();
     })
+  }
+
+  setFirstTimeLoading(gamesQuantity:number): void {
+    if(gamesQuantity >= 8){
+      this.firstTimeLoading = false;          
+    }
   }
 }

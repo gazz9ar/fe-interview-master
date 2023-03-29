@@ -1,12 +1,7 @@
 
 <div class="container-fluid">
-    <div class="row">
-        <ng-container *ngIf="isLoading">
-            <div class="w-100 d-flex justify-content-center position-relative spinner-wrapper">
-                <mat-spinner color="accent" id="games-spinner"></mat-spinner>
-            </div>       
-        </ng-container>
-        <ng-container *ngIf="!isLoading">
+    <div class="row">       
+        <ng-container>
             <ng-container *ngFor="let game of games">        
                 <div class="col-12 col-md-6 col-xl-4 col-xxl-3 d-flex justify-content-center game-col" *ngIf="game.thumb" >
                     <div class="d-flex flex-column w-100 ps-3 div-game-wrapper" >        
@@ -29,7 +24,12 @@
                 </div>
             </ng-container>
         </ng-container>
-        
+
+        <ng-container *ngIf="isLoading && !finishedLoadingAllGames">
+            <div class="w-100 d-flex justify-content-center position-relative spinner-wrapper">
+                <mat-spinner color="accent" id="games-spinner"></mat-spinner>
+            </div>       
+        </ng-container>        
        
     </div>
 </div>
