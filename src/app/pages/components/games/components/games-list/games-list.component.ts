@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { delay, map, takeUntil } from 'rxjs/operators';
 import { Game, GameMockClient } from 'src/app/shared';
 import { LastPlayedService } from '../../services/last-played.service';
-import { LoadingService } from 'src/app/shared/layout/services/loading.service';
 import { Unsub } from 'src/app/core/Unsubscription/Unsub';
 import { Store } from '@ngrx/store';
 import { LoadGames, LoadedAllGamesSuccessfully, LoadedPartialGamesSuccessfully } from 'src/app/state/actions/Games.actions';
@@ -33,7 +32,6 @@ export class GamesListComponent extends Unsub implements OnInit  {
 		public cdRef:ChangeDetectorRef,
     private router:Router,
     private lastGamesPlayedService:LastPlayedService, 
-    private loadingService:LoadingService,
     private readonly store:Store<AppState>
   ) { 
     super();
@@ -109,12 +107,12 @@ export class GamesListComponent extends Unsub implements OnInit  {
   }
 
   setLoadingAndRunChangeDetection(): void {
-    this.loadingService.finishLoading();          
+    // this.loadingService.finishLoading();          
     this.cdRef.markForCheck();   
   }
 
   loadGamesByTag(tag:string): void {    
-    this.loadingService.startLoading();
+    // this.loadingService.startLoading();
     this.gamesData$!
     .pipe(   
       takeUntil(this.unsubscribe$),
@@ -145,12 +143,12 @@ export class GamesListComponent extends Unsub implements OnInit  {
   }
 
   subscribeToLoading(): void {
-    this.loadingService.loading$
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe( (loading:boolean) => {             
-      this.isLoading = loading;
-      this.cdRef.markForCheck();
-    })
+    // this.loadingService.loading$
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe( (loading:boolean) => {             
+    //   this.isLoading = loading;
+    //   this.cdRef.markForCheck();
+    // });
   }
 
   setFirstTimeLoading(gamesQuantity:number): void {

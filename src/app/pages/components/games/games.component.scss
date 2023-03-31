@@ -23,3 +23,14 @@
         margin-left: 50px;
     }    
 }
+
+.last-played-content {
+        margin-left: 150px;	
+		overflow: hidden;
+		@include breakpoint("small") {
+			margin-left: 90px;
+		}	
+		@include breakpoint("xsmall") {
+			margin-left: 60px;
+		}	
+}

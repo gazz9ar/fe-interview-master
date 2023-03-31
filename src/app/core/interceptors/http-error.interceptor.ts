@@ -5,9 +5,8 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 
-import { catchError, delay, finalize } from 'rxjs/operators';
+import { catchError} from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { LoadingService } from 'src/app/shared/layout/services/loading.service';
 import { Observable, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -15,20 +14,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class HttpErrorInterceptor implements HttpInterceptor {
 
   constructor(
-    private loadingService:LoadingService,
     private router: Router,
     private _snackBar: MatSnackBar
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {    
-    this.loadingService.startLoading();
     return next.handle(req)
-    .pipe(
-      finalize(() => {    
-        this.loadingService.finishLoading();     
-      }),
-      catchError(error => {
-        //console.error("Request error:", error.status);
+    .pipe(   
+      catchError(error => {        
         if ( error.status == 401) {    
           this._snackBar.open(`Error ${error.status}: ${error.message}`, 'Close');   
           this.router.navigate(['home'])
