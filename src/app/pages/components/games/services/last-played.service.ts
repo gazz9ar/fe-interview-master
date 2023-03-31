@@ -1,47 +1,51 @@
+import { LoadedLastPlayedGamesSuccessfully, SaveLastPlayedGame } from './../../../../state/actions/Games.actions';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { Game } from 'src/app/shared';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LastPlayedService {
+export class LastPlayedService { 
 
-  private lastPlayedGamesSubject:BehaviorSubject<Game[]> = new BehaviorSubject<Game[]>([]);
-  public lastPlayedGames$:Observable<Game[]> = this.lastPlayedGamesSubject.asObservable(); 
-
-  constructor() { 
+  constructor(
+    private store:Store
+  ) { 
     this.getLastPlayedGamesFromLocalStorage();
   }
 
-  public getLastPlayedGamesFromLocalStorage(): Game[] {
-    const lastPlayedGames = localStorage.getItem('lastPlayedGames');
-    if(lastPlayedGames){
-      this.lastPlayedGamesSubject.next(JSON.parse(lastPlayedGames));
-      return JSON.parse(lastPlayedGames);
+  private getLastPlayedGamesFromLocalStorage(): Game[] {
+    const lastPlayedGamesJSON = localStorage.getItem('lastPlayedGames');  
+    if(lastPlayedGamesJSON){
+      const lastPlayedGames = JSON.parse(lastPlayedGamesJSON);
+      this.store.dispatch(LoadedLastPlayedGamesSuccessfully({lastPlayedGames}))
+      return lastPlayedGames;
     } else {
       return [];
     }
   }
 
-  addLastPlayedGame(game:Game): void {       
-    const lastPlayedGames = this.getLastPlayedGamesFromLocalStorage();   
+  public addLastPlayedGame(game:Game): void {   
+
+    //should get lastplayedgames from selector
+    let lastPlayedGames = this.getLastPlayedGamesFromLocalStorage();   
     if(this.isRepeatedGame(lastPlayedGames,game)){
       return;
     }
+    lastPlayedGames = Object.assign([], lastPlayedGames);
     lastPlayedGames.unshift(game);
     this.checkLastPlayedGamesQuantity(lastPlayedGames);       
-    localStorage.setItem('lastPlayedGames',JSON.stringify(lastPlayedGames));
-    this.lastPlayedGamesSubject.next(lastPlayedGames);
+    localStorage.setItem('lastPlayedGames',JSON.stringify(lastPlayedGames));    
+    this.store.dispatch(SaveLastPlayedGame({lastPlayedGames}));
   }
 
-  checkLastPlayedGamesQuantity(games:Game[]): void {
+  private checkLastPlayedGamesQuantity(games:Game[]): void {
     if(games.length > 5){
       games.pop();
     }
   }
 
-  isRepeatedGame(lastPlayedGames:Game[], gameToFind:Game): boolean {
+  private isRepeatedGame(lastPlayedGames:Game[], gameToFind:Game): boolean {
     const found = lastPlayedGames.find((game:Game) => (game.id === gameToFind.id))
     if(found){
       return true;

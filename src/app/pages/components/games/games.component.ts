@@ -6,17 +6,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   styleUrls: ['./games.component.scss'],
   changeDetection:ChangeDetectionStrategy.OnPush
 })
-export class GamesComponent implements OnInit {
+export class GamesComponent {
 
   gamesToLoad:number = 0;
   constructor() { }
 
-  ngOnInit(): void {
-    window.scrollTo(0, 0); 
-  }
-
-  onScroll() {
-    console.log('SCROLLED');    
+  onScroll() {  
     this.gamesToLoad += 8;
   }
 

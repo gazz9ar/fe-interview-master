@@ -12,12 +12,7 @@ export const LoadedPartialGamesSuccessfully = createAction(
 
 export const LoadedAllGamesSuccessfully = createAction(
     '[GAMES] Loaded ALL games data',    
-    props<{ loadedGames:Game[] }>()
-);
-
-export const LoadedTrendingGamesSuccessfully = createAction(
-    '[GAMES] Loaded TRENDING games data',    
-    props<{ trendingGames:Game[] }>()
+    props<{ loadedGames:Game[]  }>()
 );
 
 export const LoadedLastPlayedGamesSuccessfully = createAction(

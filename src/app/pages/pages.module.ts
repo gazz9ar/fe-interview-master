@@ -16,7 +16,9 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 const COMPONENTS = [
 	HomeComponent,
 	GamesListComponent,
-	BannerComponent
+	BannerComponent,
+	GamesComponent,
+	GameDescriptionComponent	
 ];
 
 @NgModule({
@@ -28,9 +30,7 @@ const COMPONENTS = [
 		InfiniteScrollModule
 	],
 	declarations: [
-		...COMPONENTS,
-		GamesComponent,
-		GameDescriptionComponent	
+		...COMPONENTS,	
 	],
 	exports: [
 		...COMPONENTS

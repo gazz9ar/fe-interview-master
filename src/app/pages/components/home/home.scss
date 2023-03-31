@@ -10,7 +10,9 @@
 		@include breakpoint("small") {
 			margin-left: 90px;
 		}	
-
+		@include breakpoint("xsmall") {
+			margin-left: 60px;
+		}		
 		#trending-games-header {
 			margin-top: 45%;		
 			@include breakpoint("large") {

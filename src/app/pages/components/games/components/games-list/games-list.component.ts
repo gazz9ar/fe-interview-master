@@ -1,3 +1,4 @@
+import { AppState, selectLastPlayedGames } from './../../../../../state/selectors/Games.selectors';
 import { Router } from '@angular/router';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -21,6 +22,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
   @Input('lastPlayed') lastPlayed:boolean = false;
   @Input('gamesQuantity') gamesQuantity:number = 0;
   gamesData$?: Observable<Game[]>;
+  lastPlayedGames$:Observable<Game[]> =  new Observable();
 	games:Game[] = [];
   isLoading: boolean = false;
   firstTimeLoading: boolean = true;
@@ -32,7 +34,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
     private router:Router,
     private lastGamesPlayedService:LastPlayedService, 
     private loadingService:LoadingService,
-    private store:Store
+    private readonly store:Store<AppState>
   ) { 
     super();
     this.gamesData$ = gameMockClient.getAll$();    
@@ -47,6 +49,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
   }
 
   ngOnInit(): void {      
+    this.lastPlayedGames$ = this.store.select(selectLastPlayedGames);    
     if(!this.checkIfLastPlayedGames() && !this.checkIfTagExists()){
       this.loadPartialGamesData(this.gamesQuantity);
     }
@@ -55,7 +58,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
 
   private checkIfTagExists(): boolean {   
     if(this.tag !== '' ){
-      this.loadGamesByTag();
+      this.loadGamesByTag(this.tag);
       return true;
     }       
     return false;
@@ -63,7 +66,11 @@ export class GamesListComponent extends Unsub implements OnInit  {
 
   private checkIfLastPlayedGames(): boolean {
     if(this.lastPlayed){
-      this.loadGamesByLastPlayed();
+      this.lastPlayedGames$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe( games => {  
+        this.games = games;
+      })
       return true;
     }  
     return false;
@@ -106,34 +113,31 @@ export class GamesListComponent extends Unsub implements OnInit  {
     this.cdRef.markForCheck();   
   }
 
-  loadGamesByTag(): void {    
+  loadGamesByTag(tag:string): void {    
     this.loadingService.startLoading();
     this.gamesData$!
     .pipe(   
       takeUntil(this.unsubscribe$),
       map((games:Game[])=> {
-        return games.filter((game:Game) => (game.tag === 'trending'))
+        return games.filter((game:Game) => (game.tag === tag))
       })
     )
     .subscribe(
 			games => {
+        this.games = games;
         this.setLoadingAndRunChangeDetection();       
 			}
 		)
-  }
-
-  loadGamesByLastPlayed(): void {
-    this.loadingService.startLoading();
-    this.lastGamesPlayedService.lastPlayedGames$
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe( games => {
-      this.setLoadingAndRunChangeDetection();   
-    })
   } 
+
+  //TODO: get lastplayedgames from ngrx selector
+  loadGamesByLastPlayed(): void {
+
+  }
 
   navigateToGamePage(game:Game): void {   
     this.lastGamesPlayedService.addLastPlayedGame(game);
-    this.router.navigate([`games/${game.id}`]);
+    //TODO:  open dialog with game info and play for fun button
   }
 
   navigateToGamesPage(): void {  
