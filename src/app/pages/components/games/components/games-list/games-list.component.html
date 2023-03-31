@@ -5,7 +5,7 @@
             <ng-container *ngFor="let game of games">        
                 <div class="col-12 col-md-6 col-xl-4 col-xxl-3 d-flex justify-content-center game-col" *ngIf="game.thumb" >
                     <div class="d-flex flex-column w-100 ps-3 div-game-wrapper" >        
-                       <div class="position-relative game-wrapper" (click)="navigateToGamePage(game)">
+                       <div class="position-relative game-wrapper" (click)="openGameDescription(game)">
                             <div class="hover-bg"></div>
                             <img class="img-fluid game-img"             
                             [src]="game.thumb.url ?? 'assets/images/casino.png'" 

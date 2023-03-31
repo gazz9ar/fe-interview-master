@@ -8,6 +8,8 @@ import { LastPlayedService } from '../../services/last-played.service';
 import { Unsub } from 'src/app/core/Unsubscription/Unsub';
 import { Store } from '@ngrx/store';
 import { LoadGames, LoadedAllGamesSuccessfully, LoadedPartialGamesSuccessfully } from 'src/app/state/actions/Games.actions';
+import { GameDescriptionComponent } from '../game-description/game-description.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'games-list',
@@ -33,7 +35,8 @@ export class GamesListComponent extends Unsub implements OnInit  {
 		public cdRef:ChangeDetectorRef,
     private router:Router,
     private lastGamesPlayedService:LastPlayedService, 
-    private readonly store:Store<AppState>
+    private readonly store:Store<AppState>,
+    private dialog:MatDialog
   ) { 
     super();
     this.gamesData$ = gameMockClient.getAll$();    
@@ -131,9 +134,8 @@ export class GamesListComponent extends Unsub implements OnInit  {
     });    
   }
 
-  navigateToGamePage(game:Game): void {   
+  addToLastPlayedGameList(game:Game): void {   
     this.lastGamesPlayedService.addLastPlayedGame(game);
-    //TODO:  open dialog with game info and play for fun button
   }
 
   navigateToGamesPage(): void {  
@@ -156,5 +158,12 @@ export class GamesListComponent extends Unsub implements OnInit  {
     if(gamesQuantity >= 8){
       this.firstTimeLoading = false;          
     }
+  }
+
+  openGameDescription(game:Game): void {
+    this.dialog.open(GameDescriptionComponent, {
+      data: game
+    });
+    this.addToLastPlayedGameList(game);
   }
 }

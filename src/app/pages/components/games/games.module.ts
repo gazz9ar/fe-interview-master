@@ -8,6 +8,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LayoutModule } from 'src/app/shared/layout/layout.module';
 import { GamesListComponent } from './components/games-list/games-list.component';
 import { GamesComponent } from './games.component';
+import { GameDescriptionComponent } from './components/game-description/game-description.component';
 
 const COMPONENTS = [
 	GamesListComponent,
@@ -16,7 +17,8 @@ const COMPONENTS = [
 
 @NgModule({
   declarations: [
-    ...COMPONENTS
+    ...COMPONENTS,
+    GameDescriptionComponent
   ],
   imports: [
     CommonModule,

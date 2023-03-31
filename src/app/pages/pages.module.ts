@@ -22,7 +22,7 @@ const COMPONENTS = [
 		AppPagesRoutingModule,
 		MaterialModule,
 		LayoutModule,
-		InfiniteScrollModule,
+		InfiniteScrollModule, 
 		GamesModule
 	],
 	declarations: [
