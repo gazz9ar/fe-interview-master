@@ -5,20 +5,15 @@ import { AppPagesRoutingModule } from "./pages-routing.module";
 import { MaterialModule } from "../material/material.module";
 import { LayoutModule } from "../shared/layout/layout.module";
 import { HomeComponent } from "./components/home/home.component";
-import { GamesListComponent } from "./components/games/components/games-list/games-list.component";
 import { BannerComponent } from "./components/home/components/banner/banner.component";
-import { GamesComponent } from './components/games/games.component';
-import { GameDescriptionComponent } from './components/games/components/game-description/game-description.component';
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { GamesModule } from "./components/games/games.module";
 
 
 
 const COMPONENTS = [
 	HomeComponent,
-	GamesListComponent,
 	BannerComponent,
-	GamesComponent,
-	GameDescriptionComponent	
 ];
 
 @NgModule({
@@ -27,7 +22,8 @@ const COMPONENTS = [
 		AppPagesRoutingModule,
 		MaterialModule,
 		LayoutModule,
-		InfiniteScrollModule
+		InfiniteScrollModule,
+		GamesModule
 	],
 	declarations: [
 		...COMPONENTS,	

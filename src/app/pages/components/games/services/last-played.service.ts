@@ -25,9 +25,7 @@ export class LastPlayedService {
     }
   }
 
-  public addLastPlayedGame(game:Game): void {   
-
-    //should get lastplayedgames from selector
+  public addLastPlayedGame(game:Game): void {  
     let lastPlayedGames = this.getLastPlayedGamesFromLocalStorage();   
     if(this.isRepeatedGame(lastPlayedGames,game)){
       return;
@@ -47,11 +45,7 @@ export class LastPlayedService {
 
   private isRepeatedGame(lastPlayedGames:Game[], gameToFind:Game): boolean {
     const found = lastPlayedGames.find((game:Game) => (game.id === gameToFind.id))
-    if(found){
-      return true;
-    } else {
-      return false;
-    }
+    return found ? true : false;
   }  
 
 }

@@ -12,7 +12,7 @@ export const selectLastPlayedGames = createSelector(
    (state: GamesState) => state.lastPlayedGames
 );
 
-// export const selectLoading = createSelector(
-//     lastPlayedGames,
-//     (state: GamesState) => state.loading
-// );
+export const selectLoading = createSelector(
+    lastPlayedGames,
+    (state: GamesState) => state.loading
+);

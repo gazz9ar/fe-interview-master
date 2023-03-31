@@ -20,10 +20,10 @@ export const gamesReducer = createReducer(
         (state:GamesState, {loadedGames}) => ({ ...state, loading: false, games: loadedGames})),
     on(GamesActions.LoadedAllGamesSuccessfully,
         (state:GamesState, {loadedGames}) => ({ ...state, loading: false, games: loadedGames})), 
-        on(GamesActions.LoadedLastPlayedGamesSuccessfully,
-            (state:GamesState, {lastPlayedGames}) => ({ ...state, loading: false, lastPlayedGames: lastPlayedGames})), 
-        on(GamesActions.SaveLastPlayedGame,
-            (state:GamesState, {lastPlayedGames}) => ({ ...state, loading: false, lastPlayedGames: lastPlayedGames})), 
+    on(GamesActions.LoadedLastPlayedGamesSuccessfully,
+        (state:GamesState, {lastPlayedGames}) => ({ ...state, loading: false, lastPlayedGames: lastPlayedGames})), 
+    on(GamesActions.SaveLastPlayedGame,
+        (state:GamesState, {lastPlayedGames}) => ({ ...state, loading: false, lastPlayedGames: lastPlayedGames})), 
   
 );
 
