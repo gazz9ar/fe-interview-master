@@ -1,0 +1,19 @@
+.description {
+    height: 155px;
+    .play-icon {
+        bottom: 24px;
+        position: absolute;
+        left: 9px;
+    }
+    .play-for-fun-btn {
+        background: rgb(237,129,10);
+        background: linear-gradient(121deg, rgba(237,129,10,1) 0%, rgba(244,187,22,1) 50%, rgba(255,254,76,1) 100%);
+        overflow: hidden;
+        &__text {
+            position: absolute;
+            left: 57px;
+            bottom: 16px;
+            font-weight: bold;
+        }
+    }
+}

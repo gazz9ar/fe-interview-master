@@ -26,42 +26,7 @@
             justify-content: center;   
             align-items: center;
         }
-    }
-    .game-wrapper {
-        width: 280px;
-        box-shadow: 0px 1px 19px 3px rgba(0,0,0,0.75);
-        border-radius: 15px;    
-        @include breakpoint("xsmall") {
-            width: 240px;   
-        }
-
-    
-        .game-img {
-            width: 100%;	
-            border-radius: 8px;
-            cursor: pointer;
-            position: relative;   
-        }  
-        
-        .hover-bg {   
-            position: absolute;
-            display: none;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 280px;
-            height: 280px;
-            border-radius: 8px;
-            background: #f9d62b14;
-            z-index: 2;
-            cursor: pointer;
-        }
-    
-        &:hover .hover-bg{        
-            display: block !important;        
-        }
-    }
-   
+    }     
 }
 
 .browse-games-wrapper {

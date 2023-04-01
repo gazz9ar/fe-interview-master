@@ -1,0 +1,7 @@
+<div class="position-relative game-wrapper" (click)="openGameDescription(game)">
+    <div class="hover-bg"></div>
+    <img class="img-fluid game-img"             
+    [src]="game.thumb.url ?? 'assets/images/casino.png'" 
+    [alt]="game.thumb.title ?? game.title" 
+    [title]="game.thumb.title ?? game.title">  
+</div>    

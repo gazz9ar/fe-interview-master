@@ -9,16 +9,18 @@ import { LayoutModule } from 'src/app/shared/layout/layout.module';
 import { GamesListComponent } from './components/games-list/games-list.component';
 import { GamesComponent } from './games.component';
 import { GameDescriptionComponent } from './components/game-description/game-description.component';
+import { GameComponent } from './components/game/game.component';
 
 const COMPONENTS = [
 	GamesListComponent,
-	GamesComponent
+	GamesComponent,
+  GameDescriptionComponent,
+  GameComponent
 ];
 
 @NgModule({
   declarations: [
     ...COMPONENTS,
-    GameDescriptionComponent
   ],
   imports: [
     CommonModule,
