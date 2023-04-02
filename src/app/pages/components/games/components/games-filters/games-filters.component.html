@@ -1,0 +1,28 @@
+<label>Search Games</label>
+<form [formGroup]="filtersForm" class="d-flex justify-content-center p-3">  
+        
+    <mat-form-field class="w-100 me-5" color="accent" appearance="outline"  >
+        <mat-label>Games</mat-label>
+        <input matInput placeholder="Write a game name..." formControlName="gamesNames">
+    </mat-form-field>
+ 
+    <mat-form-field class="w-100" color="accent" appearance="outline">
+        <mat-label>Providers</mat-label>
+        <mat-select formControlName="gamesProviders">
+          <mat-option *ngFor="let provider of providers" [value]="provider">
+            <span *ngIf="selectedProviders.indexOf(provider) === -1">{{provider}}</span>
+            <div class="d-flex justify-content-between align-items-center" *ngIf="selectedProviders.indexOf(provider) > -1">
+                <strong class="selected-option">{{provider}}</strong>
+                <mat-icon class="selected-option">check_circle_outline</mat-icon>
+            </div>
+            
+          </mat-option>
+        </mat-select>
+    </mat-form-field>   
+</form> 
+
+<mat-chip-list aria-label="Provider selection">
+    <mat-chip color="accent" *ngFor="let provider of selectedProviders">          
+      {{provider}}
+    </mat-chip>    
+</mat-chip-list>

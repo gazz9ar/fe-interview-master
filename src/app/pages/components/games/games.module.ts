@@ -10,6 +10,8 @@ import { GamesListComponent } from './components/games-list/games-list.component
 import { GamesComponent } from './games.component';
 import { GameDescriptionComponent } from './components/game-description/game-description.component';
 import { GameComponent } from './components/game/game.component';
+import { GamesFiltersComponent } from './components/games-filters/games-filters.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const COMPONENTS = [
 	GamesListComponent,
@@ -21,13 +23,15 @@ const COMPONENTS = [
 @NgModule({
   declarations: [
     ...COMPONENTS,
+    GamesFiltersComponent,
   ],
   imports: [
     CommonModule,
     GamesRoutingModule,
     MaterialModule,
 		LayoutModule,
-		InfiniteScrollModule
+		InfiniteScrollModule,
+    ReactiveFormsModule
   ],
   exports: [
     ...COMPONENTS

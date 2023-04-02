@@ -10,6 +10,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatChipsModule} from '@angular/material/chips';
 
 let materialModules:any[] = [
   MatButtonModule,
@@ -20,7 +23,10 @@ let materialModules:any[] = [
   MatSnackBarModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
-  MatDialogModule
+  MatDialogModule,
+  MatInputModule,
+  MatSelectModule,
+  MatChipsModule
 ];
 
 @NgModule({

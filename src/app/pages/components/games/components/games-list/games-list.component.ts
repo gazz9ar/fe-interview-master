@@ -1,12 +1,15 @@
+import { GameMockClient } from './../../../../../shared/client/game-mock.client';
 import { AppState, selectLastPlayedGames, selectLoading } from './../../../../../state/selectors/Games.selectors';
 import { Router } from '@angular/router';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { Game, GameMockClient } from 'src/app/shared';
+import { Game } from 'src/app/shared';
 import { Unsub } from 'src/app/core/Unsubscription/Unsub';
 import { Store } from '@ngrx/store';
 import { LoadGames, LoadedAllGamesSuccessfully, LoadedPartialGamesSuccessfully } from 'src/app/state/actions/Games.actions';
+import { gameFilter } from '../games-filters/games-filters.component';
+
 
 @Component({
   selector: 'games-list',
@@ -19,6 +22,8 @@ export class GamesListComponent extends Unsub implements OnInit  {
   @Input('searchByTag') tag:string = '';
   @Input('lastPlayed') lastPlayed:boolean = false;
   @Input('gamesQuantity') gamesQuantity:number = 0;
+  @Input('showFilters') showFilters:boolean = false;
+  @Output('onFilter') filterEmitter = new EventEmitter<gameFilter>();
   gamesData$?: Observable<Game[]>;
   lastPlayedGames$:Observable<Game[]> =  new Observable();
 	games:Game[] = [];
@@ -28,7 +33,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
   finishedLoadingAllGames:boolean = false;
   
   constructor(
-    gameMockClient: GameMockClient,
+    public gameMockClient: GameMockClient,
 		public cdRef:ChangeDetectorRef,
     private router:Router,
     private readonly store:Store<AppState>    
@@ -151,5 +156,17 @@ export class GamesListComponent extends Unsub implements OnInit  {
     }
   }
 
- 
+  filterGames(filters:gameFilter): void {    
+    this.filterEmitter.emit(filters);
+    console.log(filters);
+    
+    this.gameMockClient.getFilteredGames$(filters)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(
+      filteredGames => {
+        this.games = filteredGames;    
+        this.cdRef.markForCheck();         
+      }
+    );
+  }
 }

@@ -8,8 +8,12 @@ infiniteScroll
 class="games-wrapper"
 [infiniteScrollDistance]="1"
 [infiniteScrollThrottle]="350"
+[infiniteScrollDisabled]="disableScrolling"
 (scrolled)="onScroll()">
-    <games-list [gamesQuantity]="gamesToLoad"></games-list>
+    <games-list 
+    [gamesQuantity]="gamesToLoad"
+    [showFilters]="true"
+    (onFilter)="handleScrolling($event)"></games-list>
 </div>
 
 <div class="last-played-content">
