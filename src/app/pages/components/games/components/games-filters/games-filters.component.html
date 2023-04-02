@@ -27,4 +27,5 @@
         <mat-icon>cancel</mat-icon>
       </button>
     </mat-chip>    
+    <button mat-button (click)="clearProviders()" class="ms-4" *ngIf="selectedProviders.length > 1"> Clear all</button>
 </mat-chip-list>

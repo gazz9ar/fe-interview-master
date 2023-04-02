@@ -1,12 +1,13 @@
-import { LoadedLastPlayedGamesSuccessfully, SaveLastPlayedGame } from './../../../../state/actions/Games.actions';
+import { LoadedLastPlayedGamesSuccessfully, SaveLastPlayedGame } from '../../../../state/actions/Games.actions';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Game } from 'src/app/shared';
+import { gameFilter } from '../components/games-filters/games-filters.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LastPlayedService { 
+export class GamesService { 
 
   constructor(
     private store:Store
@@ -47,5 +48,18 @@ export class LastPlayedService {
     const found = lastPlayedGames.find((game:Game) => (game.id === gameToFind.id))
     return found ? true : false;
   }  
+
+  public setCurrentFilterInLocalStorage(filters:gameFilter): void {
+    localStorage.setItem('filters', JSON.stringify(filters));
+  }
+
+  public getFiltersFromLocalStorage(): gameFilter | null {
+    const localStorageFilters = JSON.parse(localStorage.getItem('filters') ?? '');
+    if(localStorageFilters){
+      return localStorageFilters;
+    } else {
+      return null;
+    }   
+  }
 
 }

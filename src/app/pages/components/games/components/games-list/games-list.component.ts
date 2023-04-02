@@ -161,9 +161,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
     this.gameMockClient.getFilteredGames$(filters)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(
-      filteredGames => {
-        console.log(filteredGames);
-        
+      filteredGames => {   
         this.games = filteredGames;    
         this.cdRef.markForCheck();         
       }

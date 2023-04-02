@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Game } from 'src/app/shared';
 import { GameDescriptionComponent } from '../game-description/game-description.component';
 import { MatDialog } from '@angular/material/dialog';
-import { LastPlayedService } from '../../services/last-played.service';
+import { GamesService } from '../../services/games.service';
 
 @Component({
   selector: 'casino-game',
@@ -16,7 +16,7 @@ export class GameComponent implements OnInit {
 
   constructor(
     private dialog:MatDialog,
-    private lastGamesPlayedService:LastPlayedService, 
+    private gamesService:GamesService, 
     ) { }
 
   ngOnInit(): void { 
@@ -30,7 +30,7 @@ export class GameComponent implements OnInit {
   }
 
   private addToLastPlayedGameList(game:Game): void {   
-    this.lastGamesPlayedService.addLastPlayedGame(game);
+    this.gamesService.addLastPlayedGame(game);
   }
 
 }

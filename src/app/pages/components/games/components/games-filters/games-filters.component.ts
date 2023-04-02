@@ -1,10 +1,11 @@
 import { ChangeDetectorRef } from '@angular/core';
-import { distinct, map, mergeAll } from 'rxjs/operators';
+import { distinct, map, mergeAll, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { Unsub } from 'src/app/core/Unsubscription/Unsub';
 import { Game, GameMockClient } from 'src/app/shared';
+import { GamesService } from '../../services/games.service';
 
 
 export interface gameFilter {
@@ -24,7 +25,8 @@ export class GamesFiltersComponent extends Unsub implements OnInit  {
   @Output('onSearch') onSearchEmitter = new EventEmitter<gameFilter>();
   filtersForm!: FormGroup;
   providers:string[] = [];
-  selectedProviders:string[] = []
+  selectedProviders:string[] = [];
+  allProviders:string[] = [];
   
   public get gamesNamesControl() : AbstractControl | null {    
     return this.filtersForm.get('gamesNames');
@@ -37,7 +39,7 @@ export class GamesFiltersComponent extends Unsub implements OnInit  {
   constructor(
     private _formBuilder:FormBuilder,
     public gameMockClient: GameMockClient,
-    private _cdRef:ChangeDetectorRef
+    private gamesService:GamesService
     ) { 
       super();
     }
@@ -45,17 +47,22 @@ export class GamesFiltersComponent extends Unsub implements OnInit  {
   ngOnInit(): void {
    this.getProviders();
    this.setForm();
-   this.searchGames();
+   this.searchGamesByTitle();
+   this.searchGamesByProvider();
+   this.checkLocalStorageFilters();
   }
 
   getProviders(): void {  
+    this.providers = [];
+    this.allProviders = [];
     this.gameMockClient.getProviders$()
     .pipe(
       mergeAll(),
       distinct((provider:string) => (provider))   
     )
-    .subscribe( (provider) => {
-      this.providers.push(provider);     
+    .subscribe( (provider) => {     
+      this.providers.push(provider);      
+      this.allProviders.push(provider);
     })
   }
 
@@ -65,28 +72,46 @@ export class GamesFiltersComponent extends Unsub implements OnInit  {
       gamesProviders: [Array.from([])]
     });
   }
-
-  searchGames(): void {    
+ 
+  searchGamesByTitle(): void {   
+     //user types something 
     this.gamesNamesControl?.valueChanges
     .pipe(
      takeUntil(this.unsubscribe$),
-     debounceTime(500)
+     debounceTime(500),
+     switchMap((filterValue:string) => {     
+      //obtain filtered games array
+        return this.gameMockClient.getFilteredGames$({gamesNames: filterValue, gamesProviders: this.selectedProviders})
+        .pipe(
+        tap((filteredGames:Game[]) => {
+          this.gamesService.setCurrentFilterInLocalStorage({gamesNames: filterValue, gamesProviders: this.selectedProviders});
+          if(filterValue !== ''){                    
+            this.providers = this.allProviders.filter( (provider) => (filteredGames.find( (game:Game) => (game.providerName === provider))));            
+          } else {
+            this.getProviders();
+          }          
+        })       
+       )     
+     })
     ).subscribe(
       () => {         
         this.onSearchEmitter.emit({gamesNames: this.gamesNamesControl?.value, gamesProviders: this.selectedProviders});   
       }
-    );
-
+    );    
+  }
+ 
+  searchGamesByProvider(): void {
     this.gamesProvidersControl?.valueChanges
     .pipe(
       takeUntil(this.unsubscribe$),
     )
     .subscribe(
-      (providerSelected:string) => {        
-        if(providerSelected != 'Select a provider'){
-          if(this.selectedProviders.indexOf(providerSelected) === -1){
-            this.selectedProviders.push(providerSelected);    
+      (selectedProvider:string) => {                 
+        if(selectedProvider != 'Select a provider'){        
+          if(this.selectedProviders.indexOf(selectedProvider) === -1){
+            this.selectedProviders.push(selectedProvider);    
             this.onSearchEmitter.emit({gamesNames: this.gamesNamesControl?.value, gamesProviders: this.selectedProviders});
+            this.gamesService.setCurrentFilterInLocalStorage({gamesNames: this.gamesNamesControl?.value, gamesProviders: this.selectedProviders});
           }  
           this.gamesProvidersControl?.setValue('Select a provider')  
         }        
@@ -97,6 +122,31 @@ export class GamesFiltersComponent extends Unsub implements OnInit  {
   removeProvider(provider:string): void {
       this.selectedProviders = this.selectedProviders.filter( selectedProvider => (selectedProvider !== provider));
       this.onSearchEmitter.emit({gamesNames: this.gamesNamesControl?.value, gamesProviders: this.selectedProviders});
+      this.gamesService.setCurrentFilterInLocalStorage({gamesNames: this.gamesNamesControl?.value, gamesProviders: this.selectedProviders});
+      this.gameMockClient.getFilteredGames$({gamesNames: this.gamesNamesControl?.value, gamesProviders: this.selectedProviders})
+      .pipe(
+        takeUntil(this.unsubscribe$),           
+      )
+      .subscribe(
+        (filteredGames:Game[]) => {
+          this.providers = this.allProviders.filter( (provider) => (filteredGames.find( (game:Game) => (game.providerName === provider))));          
+        }
+      )
+  }
+
+  clearProviders(): void {
+    this.selectedProviders = [];
+    // send new emission to searchGamesByTitle
+    this.gamesNamesControl?.setValue(this.gamesNamesControl.value);
+    this.gamesService.setCurrentFilterInLocalStorage({gamesNames: this.gamesNamesControl?.value, gamesProviders: this.selectedProviders});
+  }
+
+  checkLocalStorageFilters(): void {
+    const filters = this.gamesService.getFiltersFromLocalStorage();
+    if(filters){
+      this.gamesNamesControl?.setValue(filters.gamesNames);
+      this.selectedProviders = filters.gamesProviders;
+    }   
   }
 
 }
