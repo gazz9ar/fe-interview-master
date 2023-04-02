@@ -84,7 +84,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
       })
     )
     .subscribe(
-			(games: Game[]) => {  
+			(games: Game[]) => {       
         this.setNewGamesState(games);                    
 			}
 		)
@@ -156,14 +156,14 @@ export class GamesListComponent extends Unsub implements OnInit  {
     }
   }
 
-  filterGames(filters:gameFilter): void {    
-    this.filterEmitter.emit(filters);
-    console.log(filters);
-    
+  filterGames(filters:gameFilter): void {        
+    this.filterEmitter.emit(filters);   
     this.gameMockClient.getFilteredGames$(filters)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(
       filteredGames => {
+        console.log(filteredGames);
+        
         this.games = filteredGames;    
         this.cdRef.markForCheck();         
       }

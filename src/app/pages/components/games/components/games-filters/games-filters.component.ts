@@ -73,7 +73,7 @@ export class GamesFiltersComponent extends Unsub implements OnInit  {
      debounceTime(500)
     ).subscribe(
       () => {         
-        this.onSearchEmitter.emit(this.filtersForm.value);       
+        this.onSearchEmitter.emit({gamesNames: this.gamesNamesControl?.value, gamesProviders: this.selectedProviders});   
       }
     );
 
@@ -85,12 +85,18 @@ export class GamesFiltersComponent extends Unsub implements OnInit  {
       (providerSelected:string) => {        
         if(providerSelected != 'Select a provider'){
           if(this.selectedProviders.indexOf(providerSelected) === -1){
-            this.selectedProviders.push(providerSelected);                    
+            this.selectedProviders.push(providerSelected);    
+            this.onSearchEmitter.emit({gamesNames: this.gamesNamesControl?.value, gamesProviders: this.selectedProviders});
           }  
           this.gamesProvidersControl?.setValue('Select a provider')  
         }        
       }
     )
+  }
+
+  removeProvider(provider:string): void {
+      this.selectedProviders = this.selectedProviders.filter( selectedProvider => (selectedProvider !== provider));
+      this.onSearchEmitter.emit({gamesNames: this.gamesNamesControl?.value, gamesProviders: this.selectedProviders});
   }
 
 }

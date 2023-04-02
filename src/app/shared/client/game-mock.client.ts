@@ -24,12 +24,17 @@ export class GameMockClient {
 	getFilteredGames$(filters:gameFilter): Observable<Game[]> {
 		const params = new HttpParams()
 		.set('title',filters.gamesNames)
-		// .set('provider',filters.gamesProviders);
-
+		.set('provider',filters.gamesProviders.join('&'));
+	
 		return this.http.get<Game[]>(this.dataURL, {params})
 		.pipe(
 			map( (games:Game[]) => {
-				return games.filter( (game) => (game.title.toLowerCase().includes(filters.gamesNames.toLowerCase())))
+				return games.filter( (game) => {
+					if(filters.gamesProviders.length > 0){
+						return game.title.toLowerCase().includes(filters.gamesNames.toLowerCase()) && filters.gamesProviders.indexOf(game.providerName) > -1;
+					}
+					return game.title.toLowerCase().includes(filters.gamesNames.toLowerCase());
+				})
 			  })
 		);
 	}

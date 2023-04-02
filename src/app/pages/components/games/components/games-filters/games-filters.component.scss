@@ -1,4 +1,11 @@
+@import "@app/mixins";
 
 .selected-option {
     color: #69F0AE;
+}
+
+.filters-form {
+    @include breakpoint("medium") {
+        flex-direction: column;     
+    }
 }
