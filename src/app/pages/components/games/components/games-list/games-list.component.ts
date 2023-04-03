@@ -131,6 +131,8 @@ export class GamesListComponent extends Unsub implements OnInit  {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe( games => {  
       this.games = games;
+      this.store.dispatch(LoadedAllGamesSuccessfully({loadedGames:this.games}));
+      this.runChangeDetection();
     });    
   }
 

@@ -1,3 +1,4 @@
+import { ChangeDetectorRef } from '@angular/core';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { gameFilter } from './components/games-filters/games-filters.component';
 import { Observable } from 'rxjs';
@@ -21,7 +22,9 @@ export class GamesComponent extends Unsub implements Unsub{
   showLastPlayedGames:boolean = false;
   lastPlayedGames$:Observable<Game[]> =  new Observable();
   
-  constructor(private readonly store:Store<AppState>) { super() }
+  constructor(
+    private readonly store:Store<AppState> 
+    ) { super() }
 
   ngOnInit(): void {
 		this.getLastPlayedGames();
@@ -34,7 +37,7 @@ export class GamesComponent extends Unsub implements Unsub{
 		.pipe(takeUntil(this.unsubscribe$))
 		.subscribe( games => {  
 			if(games.length > 0) {
-				this.showLastPlayedGames = true;
+				this.showLastPlayedGames = true;    
 			}
 		});    		  
 	}
@@ -45,10 +48,10 @@ export class GamesComponent extends Unsub implements Unsub{
 
   handleScrolling(filters:gameFilter): void {
     if(filters.gamesNames !== '' || filters.gamesProviders.length > 0){
-      this.disableScrolling = true;
+      this.disableScrolling = true;      
     } else {
       this.disableScrolling = false;
-    }
+    }    
   }
 
 }

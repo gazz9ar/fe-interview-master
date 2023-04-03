@@ -1,5 +1,9 @@
 <div class="d-flex justify-content-center align-items-center game-description-wrapper">
-    <casino-game [gameToDisplay]="game"></casino-game>
+    <casino-game 
+    [gameToDisplay]="game"
+    [showHoverEffect]="false"
+    ></casino-game>
+
     <div class="d-flex flex-column justify-content-between align-items-center description">
         <h6 class="fs-4 ms-4 casino-text">Provider: <strong>{{game.providerName}}</strong> </h6>
         <div mat-dialog-actions>        
@@ -7,7 +11,7 @@
             class="play-for-fun-btn" 
             [@openClose]="isOpen ? 'open' : 'closed'" 
             (mouseenter)="toggle()"  
-            (mouseleave)="toggle()"
+            (mouseleave)="toggle()"        
             (click)="playGame(game.startUrl)">              
                 <mat-icon class="fs-1 play-icon">play_arrow</mat-icon>
                 <span class="play-for-fun-btn__text">Play for fun</span>

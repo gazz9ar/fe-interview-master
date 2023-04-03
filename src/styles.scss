@@ -82,4 +82,9 @@ body {
     background: #51307e;
 }
 
+.cdk-overlay-pane {
+    @include breakpoint("small") {
+        max-width: 96vw !important; 
+    }   
+}
 
