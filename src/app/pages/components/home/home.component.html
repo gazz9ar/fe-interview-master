@@ -8,6 +8,15 @@
 	<h3 class="casino-text-bg casino-font text-uppercase fs-5" id="trending-games-header">Trending Games</h3>
 	<games-list searchByTag="trending"></games-list>
 
+
 	<h3 class="casino-text-bg casino-font text-uppercase mt-4 fs-5" >Last Played Games</h3>
-	<games-list [lastPlayed]="true"></games-list>
+	<ng-container *ngIf="showLastPlayedGames">		
+		<games-list [lastPlayed]="true"></games-list>
+	</ng-container>	
+
+	<ng-container *ngIf="!showLastPlayedGames">
+		<div class="d-flex justify-content-center mt-5 mb-5">
+			<span class="casino-text text-uppercase">You haven't played any games yet!</span>	
+		</div>			
+	</ng-container>	
 </div>
