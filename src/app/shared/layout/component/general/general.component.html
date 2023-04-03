@@ -1,3 +1,8 @@
 <sidenav></sidenav>
 <toolbar></toolbar>
 <router-outlet></router-outlet>
+
+
+<div *ngIf="!legalOfAge" class="not-legal-of-age-wrapper d-flex justify-content-center align-items-center">
+    <h2 class="fs-2 casino-text">Sorry, come back when you are older!</h2>
+</div>

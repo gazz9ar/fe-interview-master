@@ -5,6 +5,7 @@ import { SidenavComponent } from './component/sidenav/sidenav.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { RouterModule } from '@angular/router';
 import { GeneralLayoutComponent } from './component/general/general.component';
+import { RequiredAgeComponent } from './component/required-age/required-age.component';
 
 let COMPONENTS:any[] = [
   ToolbarComponent,
@@ -14,7 +15,8 @@ let COMPONENTS:any[] = [
 
 @NgModule({
   declarations: [
-    ...COMPONENTS,  
+    ...COMPONENTS,
+    RequiredAgeComponent,  
   ],
   imports: [
     CommonModule,
