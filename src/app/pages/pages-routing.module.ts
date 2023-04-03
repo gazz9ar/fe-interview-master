@@ -4,7 +4,6 @@ import { HomeComponent } from "./components/home/home.component";
 import { GeneralLayoutComponent } from '../shared/layout/component/general/general.component';
 
 
-
 const ROUTES: Routes = [
 	{
 		path: '',

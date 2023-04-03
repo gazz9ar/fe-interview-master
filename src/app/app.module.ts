@@ -12,7 +12,6 @@ import { MaterialModule } from "./material/material.module";
 import { HttpErrorInterceptor } from "./core/interceptors/http-error.interceptor";
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
