@@ -44,6 +44,8 @@ export class GamesComponent extends Unsub implements Unsub{
 
   onScroll() {  
     this.gamesToLoad += 8;
+    // console.log(this.gamesToLoad );
+    
   }
 
   handleScrolling(filters:gameFilter): void {

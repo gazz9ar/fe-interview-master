@@ -31,6 +31,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
   isLoading: boolean = false;
   firstTimeLoading: boolean = true;
   finishedLoadingAllGames:boolean = false;
+  isFirstFiltersChange:boolean = true;
   
   constructor(
     public gameMockClient: GameMockClient,
@@ -42,9 +43,9 @@ export class GamesListComponent extends Unsub implements OnInit  {
     this.gamesData$ = gameMockClient.getAll$();    
   }
 
-  ngOnChanges(changes:SimpleChanges): void {
+  ngOnChanges(changes:SimpleChanges): void {      
     if(changes['gamesQuantity']){      
-      if(!changes['gamesQuantity'].isFirstChange()){
+      if(!changes['gamesQuantity'].isFirstChange()){       
         this.loadPartialGamesData(changes['gamesQuantity'].currentValue);
       }      
     }      
@@ -84,14 +85,14 @@ export class GamesListComponent extends Unsub implements OnInit  {
       })
     )
     .subscribe(
-			(games: Game[]) => {       
+			(games: Game[]) => {                 
         this.setNewGamesState(games);                    
 			}
 		)
   }
 
-  setNewGamesState(games:Game[]): void {
-    if(games.length > 0){          
+  setNewGamesState(games:Game[]): void {  
+    if(games.length > 0){        
       this.games.push(...games);
       const newArray = Object.assign([], this.games);      
       this.store.dispatch(LoadedPartialGamesSuccessfully({loadedGames:newArray}));
@@ -117,6 +118,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
     )
     .subscribe(
 			games => {
+        console.log('Partial games',games);   
         this.games = games;
         this.store.dispatch(LoadedAllGamesSuccessfully({loadedGames:this.games}));
         this.runChangeDetection();       
@@ -130,6 +132,7 @@ export class GamesListComponent extends Unsub implements OnInit  {
     this.lastPlayedGames$
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe( games => {  
+      console.log('Last played games',games);   
       this.games = games;
       this.store.dispatch(LoadedAllGamesSuccessfully({loadedGames:this.games}));
       this.runChangeDetection();
@@ -163,9 +166,11 @@ export class GamesListComponent extends Unsub implements OnInit  {
     this.gameMockClient.getFilteredGames$(filters)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(
-      filteredGames => {   
-        this.games = filteredGames;    
-        this.cdRef.markForCheck();         
+      filteredGames => {            
+        if(filters.gamesNames !== '' || filters.gamesProviders.length > 0){
+          this.games = filteredGames;     
+          this.runChangeDetection(); 
+        }            
       }
     );
   }
